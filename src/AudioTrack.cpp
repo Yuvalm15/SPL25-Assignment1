@@ -53,7 +53,7 @@ AudioTrack::AudioTrack(const AudioTrack& other)
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_data = new double[other.waveform_size];
-    for (size_t i = 0; i < waveform_size; ++i) {
+    for (size_t i = 0; i < other.waveform_size; ++i) {
         waveform_data[i] = (other.waveform_data[i]);
     }
     waveform_size = other.waveform_size;
@@ -74,7 +74,7 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_data = new double[other.waveform_size];
-    for (size_t i = 0; i < waveform_size; ++i) {
+    for (size_t i = 0; i < other.waveform_size; ++i) {
         waveform_data[i] = (other.waveform_data[i]);
     }
     waveform_size = other.waveform_size;
@@ -94,6 +94,7 @@ AudioTrack::AudioTrack(AudioTrack&& other) noexcept {
     waveform_data = other.waveform_data;
     waveform_size = other.waveform_size;
     other.waveform_data = nullptr;
+    other.waveform_size = 0;
 }
 
 AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
@@ -113,6 +114,7 @@ AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
     waveform_data = other.waveform_data;
     waveform_size = other.waveform_size;
     other.waveform_data = nullptr;
+    other.waveform_size = 0;
     return *this;
 }
 
