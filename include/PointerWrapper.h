@@ -73,8 +73,8 @@ public:
      */
     PointerWrapper& operator=(PointerWrapper&& other) noexcept {
         if (this != &other){
-            delete this.ptr;
-            this.ptr = other.ptr;
+            delete ptr;
+            ptr = other.ptr;
             other.ptr = nullptr;
         }
         return *this;
@@ -119,7 +119,9 @@ public:
      * Should the wrapper still own the pointer after calling release()?
      */
     T* release() {
-        return nullptr;
+        T* temp= ptr;
+        ptr=nullptr;
+        return temp;
     }
 
     /**
@@ -128,6 +130,10 @@ public:
      * What should happen to the old pointer?
      */
     void reset(T* new_ptr = nullptr) {
+        if (ptr!=new_ptr){
+            delete ptr;
+            ptr=new_ptr;
+        }
     }
 
     // ========== UTILITY FUNCTIONS ==========
@@ -138,7 +144,7 @@ public:
      * Why might the explicit keyword be important here?
      */
     explicit operator bool() const {
-        return false; //placeholder
+        return ptr!=nullptr; //placeholder
     }
 
     /**
@@ -147,6 +153,7 @@ public:
      */
     void swap(PointerWrapper& other) noexcept {
         std::swap(ptr, other.ptr);
+
     }
 };
 
@@ -172,6 +179,7 @@ void swap(PointerWrapper<T>& lhs, PointerWrapper<T>& rhs) noexcept {
     // TODO: Implement global swap function
     // HINT: You can use the member swap function
     //your code here...
+    lhs.swap(rhs);
 }
 
 #endif // POINTERWRAPPER_H
