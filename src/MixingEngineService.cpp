@@ -103,7 +103,7 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) cons
     // Your implementation here
     if (decks[active_deck] && track){
         int bpm = track->get_bpm();
-        track->set_bpm((decks[active_deck]->get_bpm() + track->get_bpm())/2);
+        track->set_bpm((decks[active_deck]->get_bpm() + bpm)/2);
         std::cout << "[Sync BPM] Syncing BPM from" <<bpm<< "to" <<track->get_bpm()<< "\n";
     }
 }
