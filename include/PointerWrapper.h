@@ -89,6 +89,8 @@ public:
      */
 
     T& operator*() const {
+        if (!ptr)
+            throw std::runtime_error("PointerWrapper/*: pointer is null");
         return *ptr;
     };
 
@@ -108,6 +110,8 @@ public:
      * @throws std::runtime_error if ptr is null
      */
     T* get() const {
+        if (!ptr)
+            throw std::runtime_error("PointerWrapper/get: pointer is null");
         return ptr; // Placeholder
     }
 
@@ -131,10 +135,12 @@ public:
      */
     void reset(T* new_ptr = nullptr) {
         if (ptr!=new_ptr){
-            delete ptr;
+            if (ptr){
+                delete ptr;
+            }
             ptr=new_ptr;
+            }
         }
-    }
 
     // ========== UTILITY FUNCTIONS ==========
 
