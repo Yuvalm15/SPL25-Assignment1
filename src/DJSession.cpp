@@ -64,7 +64,23 @@ bool DJSession::load_playlist(const std::string& playlist_name)  {
  */
 int DJSession::load_track_to_controller(const std::string& track_name) {
     // Your implementation here
-    return 0; // Placeholder
+    AudioTrack* curr = library_service.findTrack(track_name);
+    if (!curr){
+        std::cout << "[ERROR] Track: " <<track_name<< " not found in library \n";
+            stats.errors++;
+            return 0;
+    }
+    else {
+        int retVal = controller_service.loadTrackToCache(*curr);
+        std::cout<<"[System] Loading track ’" <<track_name<<"’ to controller...\n";
+        if (retVal == -1){
+            stats.cache_misses++;
+            stats.cache_evictions++;
+        }
+        if (retVal == 0) {stats.cache_misses++;}
+        if (retVal == 1) {stats.cache_hits++;}
+        return retVal; // Placeholder
+    }
 }
 
 /**
@@ -76,7 +92,29 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
 bool DJSession::load_track_to_mixer_deck(const std::string& track_title) {
     std::cout << "[System] Delegating track transfer to MixingEngineService for: " << track_title << std::endl;
     // your implementation here
-    return false; // Placeholder
+    AudioTrack* curr = controller_service.getTrackFromCache(track_title);
+    if (!curr){
+        std::cout<<"[ERROR] Track: "<<track_title<<" not found in cache\n";
+        stats.errors++;
+        return false;
+    }
+    else {
+        int retVal = mixing_service.loadTrackToDeck(*curr);
+        if (retVal == 0){
+            stats.deck_loads_a++;
+            stats.transitions++;
+        }
+        if (retVal == 1) {
+            stats.deck_loads_b++;
+            stats.transitions++;
+        }
+        if (retVal ==-1) {
+            std::cout<<"[ERROR] Track: "<<track_title<<" cannot be loaded to deck \n";
+            stats.errors++;
+            return false;
+        }
+        return true; // Placeholder
+    }
 }
 
 /**
@@ -109,6 +147,11 @@ void DJSession::simulate_dj_performance() {
 
     std::cout << "TODO: Implement the DJ performance simulation workflow here." << std::endl;
     // Your implementation here
+    if (play_all){
+        std::vector<std::string> playlist_names;
+
+
+    } 
 }
 
 
