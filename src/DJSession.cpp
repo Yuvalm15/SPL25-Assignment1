@@ -170,7 +170,7 @@ void DJSession::simulate_dj_performance() {
 }
 else{
     std::string input = display_playlist_menu_from_config();
-    while (input != "" || input != "0"){
+    while (input != ""){
         bool result = load_playlist(input);
          if (!result){
             std::cout<<"[ERROR] failed to load playlist. " <<input<< "\n";
