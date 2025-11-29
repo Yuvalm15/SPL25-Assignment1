@@ -147,11 +147,49 @@ void DJSession::simulate_dj_performance() {
 
     std::cout << "TODO: Implement the DJ performance simulation workflow here." << std::endl;
     // Your implementation here
+    std::map<std::string, std::vector<int>> playlists= session_config.playlists;
     if (play_all){
-        std::vector<std::string> playlist_names;
+    for (const auto &playlist : playlists){
+        bool result = load_playlist(playlist.first);
 
+        if (!result){
+            std::cout<<"[ERROR] failed to load playlist. " <<playlist.first<< "\n";
+            stats.errors++;
+        }else{
+            for (const std::string &title : track_titles){
+                std::cout<< "\n–- Processing:" <<title<< "–-\n";
+                stats.tracks_processed++;
 
-    } 
+                load_track_to_controller(title);
+                load_track_to_mixer_deck(title);
+            }
+        }
+        print_session_summary();
+        stats=SessionStats();
+    }
+}
+else{
+    std::string input = display_playlist_menu_from_config();
+    while (input != "" || input != "0"){
+        bool result = load_playlist(input);
+         if (!result){
+            std::cout<<"[ERROR] failed to load playlist. " <<input<< "\n";
+            stats.errors++;
+            }
+            else{
+                for (std::string title : track_titles){
+                    std::cout<< "\n–- Processing:" <<title<< "–-\n";
+                    stats.tracks_processed++;
+                    load_track_to_controller(title);
+                    load_track_to_mixer_deck(title);
+            }
+        }
+        print_session_summary();
+        stats=SessionStats();   
+        input = display_playlist_menu_from_config();
+    }    
+}
+std::cout<<"Session cancelled by user or all playlistsplayed.\n";
 }
 
 
