@@ -9,7 +9,16 @@
 
 
 DJSession::DJSession(const std::string& name, bool play_all)
-    : session_name(name), play_all(play_all) {
+    : session_name(name),
+    library_service(),
+    controller_service(),
+    mixing_service(),
+    config_manager(),
+    session_config(),
+    track_titles(),
+    play_all(play_all),
+    stats()
+      {
     std::cout << "DJ Session System initialized: " << session_name << std::endl;
 }
 
@@ -165,7 +174,6 @@ void DJSession::simulate_dj_performance() {
             }
         }
         print_session_summary();
-        stats=SessionStats();
     }
 }
 else{
@@ -182,10 +190,12 @@ else{
                     stats.tracks_processed++;
                     load_track_to_controller(title);
                     load_track_to_mixer_deck(title);
+                    mixing_service.displayDeckStatus(); // to print deck and cache after every track
+                    controller_service.displayCacheStatus();
+
             }
         }
         print_session_summary();
-        stats=SessionStats();   
         input = display_playlist_menu_from_config();
     }    
 }

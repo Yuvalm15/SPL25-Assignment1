@@ -99,6 +99,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
         else
             std::cout<<"[WARNING] Invalid track index: "<<index<<"\n";
     }
+    std::reverse(track_titles.begin(),track_titles.end());
     std::cout<<"[INFO] Playlist loaded: "<<playlist.get_name()<< "("<<playlist.get_track_count()<<" tracks)\n";
     // // For now, add a placeholder to fix the linker error
     // (void)playlist_name;  // Suppress unused parameter warning
