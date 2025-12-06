@@ -41,7 +41,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     }
     int target = 1 - active_deck;
     std::cout << "[Deck Switch] Target deck: "<<target<<"\n";
-    if (!decks[target]){
+    if (decks[target]){
         std::cout <<"[Unload] Unloading previous deck " <<active_deck<< "(" <<decks[active_deck]->get_title()<< ")\n";
         delete decks[target];
         decks[target] = nullptr;
