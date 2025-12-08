@@ -7,7 +7,6 @@ MP3Track::MP3Track(const std::string& title, const std::vector<std::string>& art
                    int duration, int bpm, int bitrate, bool has_tags)
     : AudioTrack(title, artists, duration, bpm), bitrate(bitrate), has_id3_tags(has_tags) {
 
-    std::cout << "MP3Track created: " << bitrate << " kbps" << std::endl;
 }
 
 // ========== TODO: STUDENTS IMPLEMENT THESE VIRTUAL FUNCTIONS ==========
@@ -28,9 +27,9 @@ void MP3Track::load() {
 
 void MP3Track::analyze_beatgrid() {
     std::cout << "[MP3Track::analyze_beatgrid] Analyzing beat grid for: \"" << title << "\"\n";
-    double beats_estimated = (duration_seconds / 60.0) *bpm;
+    int beats_estimated = (duration_seconds / 60.0) *bpm;
     double precision_factor = bitrate / 320.0;
-    std::cout <<"  →  Estimated beats: " <<beats_estimated<<  "  →  Compression precision factor:" <<precision_factor<<"\n";
+    std::cout <<"  →  Estimated beats: " <<beats_estimated<<  "  →  Compression precision factor: " <<precision_factor<<"\n";
     // TODO: Implement MP3-specific beat detection analysis
     // NOTE: Use exactly 2 spaces before each arrow (→) character
 

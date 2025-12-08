@@ -27,10 +27,10 @@ MixingEngineService::MixingEngineService(const MixingEngineService &other)
  */
 MixingEngineService::~MixingEngineService() {
     // Your implementation here
-    std::cout << " [MixingEngineService] Cleaning updecks...\n";
+    std::cout << " [MixingEngineService] Cleaning up decks...\n";
     delete decks[0];
-    decks[0] = nullptr;
     delete decks[1];
+    decks[0] = nullptr;
     decks[1] = nullptr;
 }
 
@@ -55,7 +55,7 @@ MixingEngineService &MixingEngineService::operator=(const MixingEngineService &o
  */
 int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     // Your implementation here
-    std::cout << " \n=== Loading Track to Deck ===n";
+    std::cout << " \n=== Loading Track to Deck ===\n";
     PointerWrapper <AudioTrack> cloned = track.clone();
     if (cloned.get() == nullptr){
         std::cout << "[ERROR] Track: "<<track.get_title()<<" failed to clone\n";
@@ -64,20 +64,19 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     int target = 1 - active_deck;
     std::cout << "[Deck Switch] Target deck: "<<target<<"\n";
     if (decks[target]){
-        std::cout <<"[Unload] Unloading previous deck " <<active_deck<< "(" <<decks[active_deck]->get_title()<< ")\n";
         delete decks[target];
         decks[target] = nullptr;
     }
     cloned->load();
     cloned->analyze_beatgrid();
-    if (decks[active_deck] && auto_sync && !can_mix_tracks(cloned)){
+    if (auto_sync && !can_mix_tracks(cloned)){
         sync_bpm(cloned);
     }
     decks[target] = cloned.release();
-    std::cout << "[Load Complete]"<<track.get_title()<<" is now loaded on deck " <<target<< "\n";
+    std::cout << "[Load Complete] '"<<track.get_title()<<"' is now loaded on deck " <<target<< "\n";
     
     active_deck = target;
-    std::cout <<"[Active Deck] Switched to deck" <<target<< "\n";
+    std::cout <<"[Active Deck] Switched to deck " <<target<< "\n";
     return target;
 }
 
@@ -122,6 +121,8 @@ void MixingEngineService::sync_bpm(const PointerWrapper<AudioTrack>& track) cons
     if (decks[active_deck] && track){
         int bpm = track->get_bpm();
         track->set_bpm((decks[active_deck]->get_bpm() + bpm)/2);
-        std::cout << "[Sync BPM] Syncing BPM from" <<bpm<< "to" <<track->get_bpm()<< "\n";
+        std::cout << "[Sync BPM] Syncing BPM from " <<bpm<< " to " <<track->get_bpm()<< "\n";
+    } else {
+        std::cout<<"[Sync BPM] Cannot sync - one of the decks is empty.\n";
     }
 }

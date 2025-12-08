@@ -7,11 +7,13 @@ Playlist::Playlist(const std::string& name)
     std::cout << "Created playlist: " << name << std::endl;
 }
 Playlist::Playlist(const Playlist &other) :
-    head(nullptr) ,playlist_name(other.playlist_name), track_count(other.track_count)
+    head(nullptr) ,playlist_name(other.playlist_name), track_count(0)
 {
     std::vector<AudioTrack*> tracks = other.getTracks();
     for (AudioTrack* track : tracks){
-        add_track(track);
+        if (track){
+            add_track(track->clone().release());
+        }
     }
 }
 // TODO: Fix memory leaks!
@@ -34,17 +36,21 @@ Playlist::~Playlist() {
 Playlist& Playlist::operator=(const Playlist& other)
 {  
     if (this == &other) return *this;
-    this->playlist_name = other.get_name();
-    this->track_count = other.get_track_count();
-    PlaylistNode *curr = this->head;
+    PlaylistNode* curr = head;
     while (curr) {
-        PlaylistNode *next = curr->next;
+        PlaylistNode* next = curr->next;
+        delete curr->track;
         delete curr;
         curr = next;
     }
+    head = nullptr;
+    track_count = 0;
+    this->playlist_name = other.get_name();
     std::vector<AudioTrack*> tracks = other.getTracks();
     for (AudioTrack* track : tracks){
-        add_track(track);
+        if (track){
+            add_track(track->clone().release());
+        }
     }
     return *this;
 }

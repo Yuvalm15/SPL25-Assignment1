@@ -5,16 +5,15 @@ WAVTrack::WAVTrack(const std::string& title, const std::vector<std::string>& art
                    int duration, int bpm, int sample_rate, int bit_depth)
     : AudioTrack(title, artists, duration, bpm), sample_rate(sample_rate), bit_depth(bit_depth) {
 
-    std::cout << "WAVTrack created: " << sample_rate << "Hz/" << bit_depth << "bit" << std::endl;
 }
 
 // ========== TODO: STUDENTS IMPLEMENT THESE VIRTUAL FUNCTIONS ==========
 
 void WAVTrack::load() {
     std::cout << "[WAVTrack::load] Loading WAV: \"" << title
-              << "\" at " << sample_rate << "HZ/" <<bit_depth<< "bit (uncompressed)...\n";
+              << "\" at " << sample_rate << "Hz/" <<bit_depth<< "bit (uncompressed)...\n";
     long long size = duration_seconds * sample_rate * (bit_depth / 8) * 2;
-    std::cout << "  → Estimated file size: " <<size<< "bytes\n";
+    std::cout << "  → Estimated file size: " <<size<< " bytes\n";
     std::cout << "  → Fast loading due to uncompressed format.\n";
     
     // TODO: Implement realistic WAV loading simulation
@@ -24,7 +23,7 @@ void WAVTrack::load() {
 
 void WAVTrack::analyze_beatgrid() {
     std::cout << "[WAVTrack::analyze_beatgrid] Analyzing beat grid for: \"" << title << "\"\n";
-    double beats_estimated = (duration_seconds / 60.0) *bpm;
+    int beats_estimated = (duration_seconds / 60.0) *bpm;
     std::cout << "  → Estimated beats: " <<beats_estimated<< "  → Precision factor: 1 (uncompressed audio)\n";
     // TODO: Implement WAV-specific beat detection analysis
     // Requirements:

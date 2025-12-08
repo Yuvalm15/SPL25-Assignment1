@@ -27,16 +27,16 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
 
         if (track.type == "MP3"){
             newTrack = new MP3Track(track.title, track.artists, track.duration_seconds, track.bpm, track.extra_param1, track.extra_param2);
-            std::cout<<"– MP3: MP3Track created:  "<<track.extra_param1<< "kbps\n";
+            std::cout<<"MP3Track created: "<<track.extra_param1<< " kbps\n";
         }
         if (track.type == "WAV"){
             newTrack = new WAVTrack(track.title, track.artists, track.duration_seconds, track.bpm, track.extra_param1, track.extra_param2);
-            std::cout<<"– WAV: WAVTrack created:  "<<track.extra_param1<< "Hz/"<<track.extra_param2<< "\n";
+            std::cout<<"WAVTrack created: "<<track.extra_param1<< "Hz/"<<track.extra_param2<< "bit\n";
         }
         if (newTrack)
             library.push_back(newTrack);
     }
-    std::cout<<"[INFO] Track library built: "<<library_tracks.size()<< "tracks loaded\n";
+    std::cout<<"[INFO] Track library built: "<<library_tracks.size()<< " tracks loaded\n";
 }
 
 /**
@@ -85,7 +85,7 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
     std::cout<<"[INFO] Loading playlist: "<<playlist_name<<"\n";
     playlist = Playlist(playlist_name);
     for (int index : track_indices){
-        if (index>= 0 && (std::size_t) index < library.size()){
+        if (index > 0 && (std::size_t) index <= library.size()){
             PointerWrapper <AudioTrack> cloned = library[index-1]->clone();
             AudioTrack* clone = cloned.release();
             if (clone){
