@@ -41,23 +41,18 @@ AudioTrack::~AudioTrack() {
 
 }
 
-AudioTrack::AudioTrack(const AudioTrack& other)
+AudioTrack::AudioTrack(const AudioTrack& other) 
+    : title(other.title), artists(other.artists), duration_seconds(other.duration_seconds), bpm(other.bpm), 
+      waveform_data(new double[other.waveform_size]), waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
     // Your code here...
-    title = other.title;
-    artists = other.artists;
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    waveform_data = new double[other.waveform_size];
     for (size_t i = 0; i < other.waveform_size; ++i) {
         waveform_data[i] = (other.waveform_data[i]);
     }
-    waveform_size = other.waveform_size;
-
 }
 
 AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
@@ -81,18 +76,15 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     return *this;
 }
 
-AudioTrack::AudioTrack(AudioTrack&& other) noexcept {
+AudioTrack::AudioTrack(AudioTrack&& other) noexcept 
+    : title(other.title), artists(other.artists), duration_seconds(other.duration_seconds), bpm(other.bpm), 
+      waveform_data(other.waveform_data), waveform_size(other.waveform_size)
+{
     // TODO: Implement the move constructor
     #ifdef DEBUG
     std::cout << "AudioTrack move constructor called for: " << other.title << std::endl;
     #endif
     // Your code here...
-    title = other.title;
-    artists = other.artists;
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    waveform_data = other.waveform_data;
-    waveform_size = other.waveform_size;
     other.waveform_data = nullptr;
     other.waveform_size = 0;
 }

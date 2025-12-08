@@ -35,10 +35,13 @@ public:
      */
     Playlist(const std::string& name="");
 
+    Playlist(const Playlist& other);
     /**
      * Destructor
      */
     ~Playlist();
+
+    Playlist& operator=(const Playlist& other);
 
     /**
      * Add a track to the playlist

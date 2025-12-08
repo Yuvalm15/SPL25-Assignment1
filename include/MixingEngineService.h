@@ -17,7 +17,9 @@ private:
     int bpm_tolerance;
 public:
     MixingEngineService();
+    MixingEngineService(const MixingEngineService& other);
     ~MixingEngineService();
+    MixingEngineService& operator=(const MixingEngineService& other);
 
     /** Contract: Load a track to the next deck per instant-transition policy
      * - @param track: reference to a cached track to be cloned for the mixer

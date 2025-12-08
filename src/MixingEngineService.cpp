@@ -14,17 +14,39 @@ MixingEngineService::MixingEngineService()
     std::cout << "[MixingEngineService] Initialized with 2 empty decks.\n";
 }
 
+MixingEngineService::MixingEngineService(const MixingEngineService &other)  
+    : decks(), active_deck(1), auto_sync(other.auto_sync), bpm_tolerance(other.bpm_tolerance)
+{
+    loadTrackToDeck(*other.decks[0]);
+    loadTrackToDeck(*other.decks[1]);
+    active_deck = other.active_deck;
+}
+
 /**
  * TODO: Implement MixingEngineService destructor
  */
 MixingEngineService::~MixingEngineService() {
     // Your implementation here
     std::cout << " [MixingEngineService] Cleaning updecks...\n";
-    delete[] decks;
+    delete decks[0];
     decks[0] = nullptr;
+    delete decks[1];
     decks[1] = nullptr;
 }
 
+MixingEngineService &MixingEngineService::operator=(const MixingEngineService &other)
+{
+    if (this == &other) return *this;
+    auto_sync = other.auto_sync;
+    bpm_tolerance = other.bpm_tolerance;
+    delete decks[0];
+    delete decks[1];
+    active_deck = 1;
+    loadTrackToDeck(*other.decks[0]);
+    loadTrackToDeck(*other.decks[1]);
+    active_deck = other.active_deck;
+    return *this;
+}
 
 /**
  * TODO: Implement loadTrackToDeck method

@@ -158,22 +158,22 @@ void DJSession::simulate_dj_performance() {
     // Your implementation here
     std::map<std::string, std::vector<int>> playlists= session_config.playlists;
     if (play_all){
-    for (const auto &playlist : playlists){
-        bool result = load_playlist(playlist.first);
+        for (const auto &playlist : playlists){
+            bool result = load_playlist(playlist.first);
+            if (!result){
+                std::cout<<"[ERROR] failed to load playlist. " <<playlist.first<< "\n";
+                stats.errors++;
+            }else{
+                std::reverse(track_titles.begin(),track_titles.end());
+                for (const std::string &title : track_titles){
+                    std::cout<< "\n–- Processing:" <<title<< "–-\n";
+                    stats.tracks_processed++;
 
-        if (!result){
-            std::cout<<"[ERROR] failed to load playlist. " <<playlist.first<< "\n";
-            stats.errors++;
-        }else{
-            for (const std::string &title : track_titles){
-                std::cout<< "\n–- Processing:" <<title<< "–-\n";
-                stats.tracks_processed++;
-
-                load_track_to_controller(title);
-                load_track_to_mixer_deck(title);
+                    load_track_to_controller(title);
+                    load_track_to_mixer_deck(title);
+                }
             }
-        }
-        print_session_summary();
+            print_session_summary();
     }
 }
 else{

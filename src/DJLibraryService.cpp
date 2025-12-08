@@ -25,13 +25,14 @@ void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>&
     for (const SessionConfig::TrackInfo& track : library_tracks){
         AudioTrack* newTrack = nullptr;
 
-        if (track.type == "MP3")
+        if (track.type == "MP3"){
             newTrack = new MP3Track(track.title, track.artists, track.duration_seconds, track.bpm, track.extra_param1, track.extra_param2);
             std::cout<<"– MP3: MP3Track created:  "<<track.extra_param1<< "kbps\n";
-        if (track.type == "WAV")
+        }
+        if (track.type == "WAV"){
             newTrack = new WAVTrack(track.title, track.artists, track.duration_seconds, track.bpm, track.extra_param1, track.extra_param2);
             std::cout<<"– WAV: WAVTrack created:  "<<track.extra_param1<< "Hz/"<<track.extra_param2<< "\n";
-
+        }
         if (newTrack)
             library.push_back(newTrack);
     }
@@ -91,7 +92,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
                 clone->load();
                 clone->analyze_beatgrid();
                 playlist.add_track(clone);
-                std::cout<<" Added "<<clone->get_title()<< "to playlist "<<playlist_name<<"\n";
             } else {
                 std::cout<<"[Error] Clone returned nullptr for index :  "<<index<<"\n";
             }
@@ -99,7 +99,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
         else
             std::cout<<"[WARNING] Invalid track index: "<<index<<"\n";
     }
-    // std::reverse(track_titles.begin(),track_titles.end());
     std::cout<<"[INFO] Playlist loaded: "<<playlist.get_name()<< "("<<playlist.get_track_count()<<" tracks)\n";
     // // For now, add a placeholder to fix the linker error
     // (void)playlist_name;  // Suppress unused parameter warning
